@@ -34,8 +34,8 @@ local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local ToServer = Remotes:WaitForChild("To_Server")
 local HandleFireServer = ToServer:WaitForChild("Handle_Initiate_S")
 local HandleInvokeServer = ToServer:WaitForChild("Handle_Initiate_S_")
-local FireServer = Instance.new("RemoteEvent").FireServer
-local InvokeServer = Instance.new("RemoteFunction").InvokeServer
+-- local FireServer = Instance.new("RemoteEvent").FireServer
+-- local InvokeServer = Instance.new("RemoteFunction").InvokeServer
 -- // For Executor && Function \\ --
 local spawn, wait = task.spawn, task.wait
 -- Table
@@ -92,10 +92,10 @@ if Remotes:FindFirstChild("getclientping") then
     end
 end
 -- // Function \\ --
-local function CallerRemote(Remote, ...)
-    local Method = Remote.ClassName == ("RemoteEvent") and FireServer or Remote.ClassName == ("RemoteFunction") and InvokeServer
-    return spawn(Method, Remote, ...)
-end
+-- local function CallerRemote(Remote, ...)
+--     local Method = Remote.ClassName == ("RemoteEvent") and FireServer or Remote.ClassName == ("RemoteFunction") and InvokeServer
+--     return spawn(Method, Remote, ...)
+-- end
 
 local function TableFind(Table, Value)
     for _, v in pairs(Table) do
