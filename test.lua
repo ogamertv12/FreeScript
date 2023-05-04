@@ -272,16 +272,15 @@ spawn(function()
             if (Settings.AutoFarm) then
                 local Closest = GetClosest()
                 local Method = MethodFarm(Settings.FarmMethod)
-                print(Closest)
 
                 -- if not AutofarmDetails.Closest then
                 --     AutofarmDetails.Closest = GetClosest()
                 --     return
                 -- end
                 
-                -- repeat wait()
-                --     Tween(AutofarmDetails.Closest:GetModelCFrame() * Method)
-                -- until not Settings.AutoFarm or not AutofarmDetails.Closest.Parent --or not AutofarmDetails.Closest.Humanoid.Health <= 0
+                repeat wait()
+                    Tween(Closest:GetModelCFrame() * Method)
+                until not Settings.AutoFarm or not Closest.Parent --or not AutofarmDetails.Closest.Humanoid.Health <= 0
                 -- AutofarmDetails.Closest = nil
             end
         -- end)
