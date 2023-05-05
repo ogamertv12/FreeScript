@@ -85,12 +85,19 @@ for _,v in pairs(getconnections(LocalPlayer.Idled)) do
     v:Disable()
 end
 
-if Remotes:FindFirstChild("getclientping") then 
-    Remotes:FindFirstChild("getclientping").OnClientInvoke = function()
-        wait(5)
-        return true
-    end
-end
+if game.ReplicatedStorage:FindFirstChild("Remotes"):FindFirstChild("getclientping") then 
+    game.ReplicatedStorage:FindFirstChild("Remotes"):FindFirstChild("getclientping").OnClientInvoke = function() 
+        task.wait(5)
+        return true 
+    end 
+end 
+
+-- if Remotes:FindFirstChild("getclientping") then 
+--     Remotes:FindFirstChild("getclientping").OnClientInvoke = function()
+--         wait(5)
+--         return true
+--     end
+-- end
 -- // Function \\ --
 -- local function CallerRemote(Remote, ...)
 --     local Method = Remote.ClassName == ("RemoteEvent") and FireServer or Remote.ClassName == ("RemoteFunction") and InvokeServer
