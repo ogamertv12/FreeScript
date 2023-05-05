@@ -1925,7 +1925,7 @@ spawn(function()
             end
 
             if (Settings.AutoRespawn) then
-                print("Loop")
+                print("Dead:", IsDead())
                 if IsDead() then
                     ReplicatedStorage.TeleportToShop:FireServer()
                 end
