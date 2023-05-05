@@ -1,4 +1,8 @@
 repeat task.wait() until game:IsLoaded()
+if not LPH_OBFUSCATED then
+    LPH_JIT_MAX = function(...) return(...) end;
+    LPH_NO_VIRTUALIZE = function(...) return(...) end;
+end
 if game.PlaceId ~= 6152116144 then return end
 -- // Setting Library \\ --
 local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/ogamertv12/SylveonHub/main/test.lua'))()
@@ -36,8 +40,6 @@ local HandleFireServer = ToServer:WaitForChild("Handle_Initiate_S")
 local HandleInvokeServer = ToServer:WaitForChild("Handle_Initiate_S_")
 -- local FireServer = Instance.new("RemoteEvent").FireServer
 -- local InvokeServer = Instance.new("RemoteFunction").InvokeServer
--- // For Executor && Function \\ --
-local spawn, wait = task.spawn, task.wait
 -- Table
 local AutofarmDetails = {
     Closest = nil,
@@ -76,6 +78,22 @@ local AutofarmDetails = {
     }
 }
 -- // Init \\ --
+LPH_JIT_MAX(function() 
+    local oldmt 
+    oldmt = hookmetamethod(game, "__namecall", function(self, ...)
+        if (not checkcaller()) and getnamecallmethod():lower() == "kick" then 
+            return
+        end 
+        if getnamecallmethod() == "InvokeServer" and self.Name == "reporthackerasdasd" then 
+            return 
+        end 
+        if getnamecallmethod() == "FireServer" and self.Name:match("modd") then 
+            return 
+        end 
+        return oldmt(self, ...)
+    end)
+end)();
+
 if setfflag then
     setfflag("HumanoidParallelRemoveNoPhysics", "False")
     setfflag("HumanoidParallelRemoveNoPhysicsNoSimulate2", "False")
@@ -85,19 +103,12 @@ for _,v in pairs(getconnections(LocalPlayer.Idled)) do
     v:Disable()
 end
 
-if game.ReplicatedStorage:FindFirstChild("Remotes"):FindFirstChild("getclientping") then 
-    game.ReplicatedStorage:FindFirstChild("Remotes"):FindFirstChild("getclientping").OnClientInvoke = function() 
+if Remotes:FindFirstChild("getclientping") then 
+    Remotes:FindFirstChild("getclientping").OnClientInvoke = function()
         task.wait(5)
-        return true 
-    end 
-end 
-
--- if Remotes:FindFirstChild("getclientping") then 
---     Remotes:FindFirstChild("getclientping").OnClientInvoke = function()
---         wait(5)
---         return true
---     end
--- end
+        return true
+    end
+end
 -- // Function \\ --
 -- local function CallerRemote(Remote, ...)
 --     local Method = Remote.ClassName == ("RemoteEvent") and FireServer or Remote.ClassName == ("RemoteFunction") and InvokeServer
@@ -296,8 +307,8 @@ RunService.Heartbeat:Connect(function()
         end
     end)
 end)
-spawn(function()
-    while wait() do
+task.spawn(function()
+    while task.wait() do
         pcall(function()
             if (Settings.AutoFarm) then
                 local Method = MethodFarm(Settings.FarmMethod)
@@ -306,26 +317,19 @@ spawn(function()
                     AutofarmDetails.Closest = GetClosest()
                 end
                 
-                repeat wait()
+                repeat task.wait()
                     Tween(AutofarmDetails.Closest:GetModelCFrame() * Method)
                 until not Settings.AutoFarm or not AutofarmDetails.Closest.Parent --or not AutofarmDetails.Closest.Humanoid.Health <= 0
                 AutofarmDetails.Closest = nil
             end
-
-            if (Settings.RemoveMap) then
-                local hasMap = IsMap()
-                if (hasMap[1]) then
-                    hasMap[2]:Remove()
-                end
-            end
         end)
     end
 end)
-spawn(function()
-    while wait() do
+task.spawn(function()
+    while task.wait() do
         if (Settings.KillAura) then
             pcall(Attack, AutofarmDetails.AttackMethods[Settings.KillAuraMethod])
-            wait(2)
+            task.wait(2)
         end
     end
 end)
