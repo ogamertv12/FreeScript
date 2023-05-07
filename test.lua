@@ -1,7 +1,7 @@
 repeat task.wait() until game:IsLoaded()
 -- // Setting Library \\ --
 local loadstart = os.clock()
-local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/ogamertv12/FreeScript/main/UI.lua'))()
+local Library = loadstring(game:HttpGet('https://raw.githubusercontent.com/ogamertv12/SylveonHub/main/Library.lua'))()
 local ThemeManager = loadstring(game:HttpGet('https://raw.githubusercontent.com/wally-rblx/LinoriaLib/main/addons/ThemeManager.lua'))()
 ThemeManager:SetLibrary(Library)
 ThemeManager:SetFolder('SylveonHub')
