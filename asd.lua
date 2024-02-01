@@ -94,8 +94,7 @@ LocalPlayer.Idled:Connect(function()
     VirtualUser:ClickButton2(Vector2.new(), Camera.CFrame)
 end)
 
-local args = { [1] = "playInitiated",[2] = {["buttonsClicked"] = {[1] = "Play"},["fps"] = 30} }
-ReplicatedStorage.Remotes.InformGeneralEventFunnel:FireServer(unpack(args))
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("PlayerReady"):FireServer()
 --Game Disconnect
 game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(child)
     if child.Name == "ErrorPrompt" then
