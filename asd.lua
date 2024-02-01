@@ -125,13 +125,13 @@ local page2 = venyx:addPage("Other")
 local FirstSection1 = page1:addSection("Auto Farm")
 local FirstSection2 = page1:addSection("Options")
 
-FirstSection1:addToggle("Enabled", nil, function(value)
+FirstSection1:addToggle("Enabled", true, function(value)
     AutoFarm = value
     if value and not AutoFarmRunning then
         coroutine.resume(AutoFarmFunc)
     end
 end)
-FirstSection2:addToggle("Touch The Ground", nil, function(value)
+FirstSection2:addToggle("Touch The Ground", true, function(value)
     TouchTheRoad = value
 end)
 FirstSection2:addToggle("Collect Playtime", nil, function(value)
