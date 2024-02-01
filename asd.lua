@@ -30,7 +30,7 @@ end
 
 --Velocity TP
 local function VelocityTP(cframe)
-    local TeleportSpeed = math.random(200, 600)
+    local TeleportSpeed = math.random(500, 600)
     local Car = GetCurrentVehicle()
     local BodyGyro = Instance.new("BodyGyro", Car.PrimaryPart)
     BodyGyro.P = 5000
