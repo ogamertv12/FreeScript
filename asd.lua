@@ -8,6 +8,8 @@ local VirtualUser = game:GetService("VirtualUser")
 local MarketplaceService = game:GetService("MarketplaceService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
 
 --Get Current Vehicle
 local function GetCurrentVehicle()
@@ -46,6 +48,22 @@ local function VelocityTP(cframe)
     BodyGyro:Destroy()
 end
 
+local function HopServer()
+    local success, servers = pcall(function()
+        return HttpService:JSONDecode(game:HttpGet(
+            "https://games.roblox.com/v1/games/" .. tostring(game.PlaceId) .. "/servers/Public?limit=100"
+        )).data
+     end)
+     if not success then return end
+     local server = servers[1]
+     for i,svr in pairs(servers) do
+        if svr["playing"] < server["playing"] then
+            server = svr
+        end
+     end
+     TeleportService:TeleportToPlaceInstance(game.PlaceId, server.id)
+end
+
 --Auto Farm
 local StartPosition = CFrame.new(Vector3.new(4940.19775, 66.0195084, -1933.99927, 0.343969434, -0.00796990748, -0.938947022, 0.00281227613, 0.999968231, -0.00745762791, 0.938976645, -7.53822824e-05, 0.343980938), Vector3.new())
 local EndPosition = CFrame.new(Vector3.new(1827.3407, 66.0150146, -658.946655, -0.366112858, 0.00818905979, 0.930534422, 0.00240773871, 0.999966264, -0.00785277691, -0.930567324, -0.000634518801, -0.366120219), Vector3.new())
@@ -74,6 +92,15 @@ end)
 LocalPlayer.Idled:Connect(function()
     VirtualUser:CaptureController()
     VirtualUser:ClickButton2(Vector2.new(), Camera.CFrame)
+end)
+
+local args = { [1] = "playInitiated",[2] = {["buttonsClicked"] = {[1] = "Play"},["fps"] = 30} }
+ReplicatedStorage.Remotes.InformGeneralEventFunnel:FireServer(unpack(args))
+--Game Disconnect
+game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(child)
+    if child.Name == "ErrorPrompt" then
+        HopServer()
+    end
 end)
 
 --UI
