@@ -125,9 +125,9 @@ local FirstSection2 = page1:addSection("Options")
 
 FirstSection1:addToggle("Enabled", true, function(value)
     AutoFarm = value
-    -- if value and not AutoFarmRunning then
-    --     coroutine.resume(AutoFarmFunc)
-    -- end
+    if value and not AutoFarmRunning then
+        coroutine.resume(AutoFarmFunc)
+    end
 end)
 FirstSection2:addToggle("Touch The Ground", true, function(value)
     TouchTheRoad = value
@@ -150,21 +150,3 @@ for theme, color in pairs(themes) do
 end
 --load
 venyx:SelectPage(venyx.pages[1], true)
-
-task.spawn(function()
-    while task.wait() do
-        if AutoFarm then
-            pcall(function()
-                if not GetCurrentVehicle() and tick() - (LastNotif or 0) > 5 then
-                    LastNotif = tick()
-                    ReplicatedStorage.Remotes.VehicleEvent:FireServer("Spawn", "Roadster1")
-                else
-                    TP(StartPosition + (TouchTheRoad and Vector3.new() or Vector3.new(0, 1, 0)))
-                    VelocityTP(EndPosition + (TouchTheRoad and Vector3.new() or Vector3.new(0, 1, 0)))
-                    TP(EndPosition + (TouchTheRoad and Vector3.new() or Vector3.new(0, 1, 0)))
-                    VelocityTP(StartPosition + (TouchTheRoad and Vector3.new() or Vector3.new(0, 1, 0)))
-                end
-            end)
-        end
-    end
-end)
